@@ -2,12 +2,8 @@
 using DataFrames, CSV, StatsBase, Printf, Plots
 
 ### Load data ###
-AMP_collection = CSV.read(raw"C:\Users\msvhaeve\OneDrive - UGent\Desktop\webscraping\recent_amp_scrape\AmP_collection.csv", DataFrame)
-AMP_species = CSV.read(raw"C:\Users\msvhaeve\OneDrive - UGent\Desktop\webscraping\recent_amp_scrape\AmP_species_list.csv", DataFrame)
-AMP_Ecoinfo = CSV.read(raw"C:\Users\msvhaeve\OneDrive - UGent\Desktop\webscraping\recent_amp_scrape\AmP_Ecoinfo.csv", DataFrame)
-AMP_tref_parameters = CSV.read(raw"C:\Users\msvhaeve\OneDrive - UGent\Desktop\webscraping\recent_amp_scrape\AmP_tref_parameters.csv", DataFrame)
-AMP_tref_pseudodata = CSV.read(raw"C:\Users\msvhaeve\OneDrive - UGent\Desktop\webscraping\recent_amp_scrape\AmP_tref_pseudodata.csv", DataFrame)
-
+# load AMP_collection, AMP_species, AMP_Ecoinfo, AMP_tref_parameters, AMP_tref_pseudodata from system
+include("SystemSpecific_filepaths.jl")
 
 ### Define functions ###
 function LifeHistoryTable(AMP_coll)

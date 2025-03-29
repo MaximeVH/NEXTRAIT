@@ -148,36 +148,15 @@ function extend_amp_mitototal_df(amp_mitototal,new_mito_df,scraped_amp)
 end
 
 #### Get Data #### 
-mitofish_dir = raw"C:\Users\msvhaeve\OneDrive - UGent\Desktop\DEBpaper\DEBPaper_datasets\Genomic\Mitogenomes\mitofish"
-MitoFish = get_mitofish_df(mitofish_dir)
-scraped_amp = CSV.read(raw"C:\Users\msvhaeve\OneDrive - UGent\Desktop\webscraping\recent_amp_scrape\AmP_species_list.csv", DataFrame)
-path = raw"C:\Users\msvhaeve\Downloads\mitochondrion.1.1.genomic.fna\mitochondrion.1.1.genomic.fna"
-fastaa = parse_fasta_to_dataframe(path)
-fasta_file = raw"C:\Users\msvhaeve\OneDrive - UGent\Desktop\DEBpaper\Other\refseq_mitogenomes\animal_mitogenomes.fasta"
-prev_mitos = CSV.read(raw"C:\Users\msvhaeve\OneDrive - UGent\Desktop\DEBpaper\DEBPaper_datasets\Genomic\Mitogenomes\all_mitos.csv", DataFrame)
-prev_mitos[!,"accession"]  = prev_mitos.Accession_number
-prev_mitos[!,"species"]  = prev_mitos.Species
-prev_mitos[!,"sequence"]  = prev_mitos.Sequence
-birdz = parse_fasta_to_dataframe(raw"C:\Users\msvhaeve\OneDrive - UGent\Desktop\DEBpaper\DEBPaper_datasets\Genomic\Mitogenomes\mitobird\ncbi_dataset\data\genome.fna")
-mammalz =  parse_fasta_to_dataframe(raw"C:\Users\msvhaeve\OneDrive - UGent\Desktop\DEBpaper\DEBPaper_datasets\Genomic\Mitogenomes\mammomito\ncbi_dataset\data\genome.fna")
-mitototal = CSV.read(raw"C:\Users\msvhaeve\OneDrive - UGent\Desktop\DEBpaper\DEBPaper_datasets\Genomic\mito_amp.csv", DataFrame)
-totalmito = CSV.read(raw"C:\Users\msvhaeve\OneDrive - UGent\Desktop\DEBpaper\DEBPaper_datasets\Genomic\Mitogenomes\all_mitos_total.csv", DataFrame)
-allmito = CSV.read(raw"C:\Users\msvhaeve\OneDrive - UGent\Desktop\DEBpaper\DEBPaper_datasets\Genomic\Mitogenomes\copied_from_drive\all_mitos.csv", DataFrame)
-allmito[!,"accession"]  = allmito.Accession_number
-allmito[!,"species"]  = allmito.Species
-allmito[!,"sequence"]  = allmito.Sequence
-formermito = parse_fasta_to_dataframe(raw"C:\Users\msvhaeve\Downloads\mitogenomes.fasta")
-mitoAge = CSV.read(raw"C:\Users\msvhaeve\Downloads\mitoage_build1_total_mtDNA\total_mtDNA_base_composition.csv", DataFrame)
-MitoAge_df = parse_fasta_to_dataframe(raw"C:\Users\msvhaeve\OneDrive - UGent\Desktop\DEBpaper\DEBPaper_datasets\MitoAgesequences.fasta")
-
-
-#### Construct total mitogenome dataset #### 83.281899 seconds
+## Load AmP data and mitogenomes downloaded from NCBI, MitoFish, and MitoAge 
+include("SystemSpecific_filepaths.jl")
+#### Construct total mitogenome dataset from the different sources #### 83.281899 seconds
 @time begin
 AMPMITO = get_amp_mitototal_df(MitoFish,scraped_amp)
 AMPMITO = extend_amp_mitototal_df(AMPMITO,fastaa,scraped_amp)
 AMPMITO = extend_amp_mitototal_df(AMPMITO,mitototal,scraped_amp)
-AMPMITO = extend_amp_mitototal_df(AMPMITO,mammalz,scraped_amp)
-AMPMITO = extend_amp_mitototal_df(AMPMITO,birdz,scraped_amp)
+AMPMITO = extend_amp_mitototal_df(AMPMITO,mammals,scraped_amp)
+AMPMITO = extend_amp_mitototal_df(AMPMITO,birds,scraped_amp)
 AMPMITO = extend_amp_mitototal_df(AMPMITO,prev_mitos,scraped_amp)
 AMPMITO = extend_amp_mitototal_df(AMPMITO,allmito,scraped_amp)
 AMPMITO = extend_amp_mitototal_df(AMPMITO,totalmito,scraped_amp)
@@ -186,6 +165,3 @@ AMPMITO = extend_amp_mitototal_df(AMPMITO,MitoAge_df,scraped_amp)
 AMPMITO = accession_enrichment(AMPMITO)
 AMPMITO = ID_unification(AMPMITO)
 end
-
-
-CSV.write(raw"C:\Users\msvhaeve\OneDrive - UGent\Desktop\webscraping\recent_amp_scrape\AMPMITO.csv", AMPMITO)

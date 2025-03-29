@@ -1,2 +1,2 @@
 # NEXTRAIT
-Dedicated Github repository for the NEXTRAIT project
+Placeholder for the NEXTRAIT project's dedicated Github repository

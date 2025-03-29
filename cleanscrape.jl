@@ -80,7 +80,6 @@ function aref_to_texts(aref)
     end
 end
 
-
 function get_datatable_from_species(species)
     url = "https://www.bio.vu.nl/thb/deb/deblab/add_my_pet/entries_web/$(species)/$(species)_res.html"
     r1 = HTTP.request("GET", url)
@@ -150,10 +149,6 @@ function get_zero_variate_df(url)
     end
     return df_
 end
-
-# @time zero_var_df = get_zero_variate_df(url)
-# wide_df2 = unstack(zero_var_df, :Species, :Data, :Observed)
-# display_table(zero_var_df)
 
 function get_single_pseudodata_df(species,tableind=4)
     url = "https://www.bio.vu.nl/thb/deb/deblab/add_my_pet/entries_web/$(species)/$(species)_res.html"
@@ -375,7 +370,6 @@ function parse_html_to_df(ecotable)
     return df
 end
 
-
 function EcoZone_df(species)
     Url_ = "https://www.bio.vu.nl/thb/deb/deblab/add_my_pet/entries_web/$(species)/$(species)_res.html"
     r1 = HTTP.request("GET", Url_)
@@ -404,7 +398,3 @@ function get_ecozone_df(url)
     return df_reordered
 end
 
-
-# @time ecozone_df = get_ecozone_df(url)
-
-# display_table(ecozone_df)
