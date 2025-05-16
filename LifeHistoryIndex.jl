@@ -2,7 +2,7 @@ using CSV, DataFrames, Statistics
 using MLJ, Plots
 using MLJMultivariateStatsInterface
 using MultivariateStats
-AMPCOL = CSV.read(raw"C:\Users\msvhaeve\OneDrive - UGent\Desktop\webscraping\recent_amp_scrape\AmP_collection.csv", DataFrame)
+AMPCOL = CSV.read("AmP_collection.csv", DataFrame)
 display_table(df) = VSCodeServer.vscodedisplay(df)
 function convert_columns_to_float64(df::DataFrame)
     for col in names(df)[2:end]
@@ -285,7 +285,7 @@ end
 @time LH_df_noguess = GetLifeHistoryDFOld(AMPCOL,true)
 LH_df = LH_df_noguess
 #### PCA ####
-species_list = CSV.read(raw"C:\Users\msvhaeve\OneDrive - UGent\Desktop\webscraping\recent_amp_scrape\AmP_species_list.csv", DataFrame)
+species_list = CSV.read("AmP_species_list.csv", DataFrame)
 filter!(x-> x.ID in unique(LH_df.species), species_list)
 LifeHistoryPCA(LH_df,"Li")
 LifeHistoryPCA(LH_df,"Ri")
@@ -293,11 +293,6 @@ ff, ddf = LifeHistoryPCA(LH_df,"Wwi")
 LifeHistoryPCA(LH_df,"Wwb")
 LifeHistoryPCA(LH_df,"ab")
 ff1, ddf1 =LifeHistoryPCA(LH_df,"am")
-
-# CSV.write(raw"C:\Users\msvhaeve\OneDrive - UGent\Desktop\lucile_data\lifehistoryp_df.csv",LH_df )
-
-# CSV.write(raw"C:\Users\msvhaeve\OneDrive - UGent\Desktop\lucile_data\lifehistorypca.csv", DataFrame(ID=LH_df.species, PC1=ddf.x1, PC2=ddf.x2))
-
 savefig("lifehistorypca.png")
 
 #consider only Chordata
@@ -309,11 +304,6 @@ LifeHistoryPCA(LH_df_chord,"Wwi")
 LifeHistoryPCA(LH_df_chord,"Wwb")
 LifeHistoryPCA(LH_df_chord,"ab")
 LifeHistoryPCA(LH_df_chord,"am")
-
-# This PCA Approach was done in doi:10.1038/s41559-019-0938-7
-# Percentage of variance explained by each component should be added!!!
-# NOTE: In order to do regression: Do standardisation and PCA on training data, then apply the same transformation to the test data
-# life span, reproduction rate, weight at birth, ultimate weight, age at birth, and ultimate length
 
 ########### Regression ###########
 mito_df = CSV.read(raw"C:\Users\msvhaeve\OneDrive - UGent\Desktop\webscraping\recent_amp_scrape\AMPMITO.csv", DataFrame)
@@ -358,12 +348,6 @@ basicecodf_limited = filter(x-> x.ID in LH_df.species, basicecodf)
 fooddf_limited = filter(x-> x.ID in LH_df.species, fooddf)
 habitatdf_limited = filter(x-> x.ID in LH_df.species, habitatdf)
 species_list_limited = filter(x-> x.ID in LH_df.species, species_list)
-
-CSV.write(raw"C:\Users\msvhaeve\OneDrive - UGent\Desktop\lucile_data\ecoinfo.csv", EcoInfo_limited)
-CSV.write(raw"C:\Users\msvhaeve\OneDrive - UGent\Desktop\lucile_data\basicecodf.csv", basicecodf_limited)
-CSV.write(raw"C:\Users\msvhaeve\OneDrive - UGent\Desktop\lucile_data\fooddf.csv", fooddf_limited)
-CSV.write(raw"C:\Users\msvhaeve\OneDrive - UGent\Desktop\lucile_data\species.csv", species_list_limited)
-CSV.write(raw"C:\Users\msvhaeve\OneDrive - UGent\Desktop\lucile_data\habitatdf.csv", habitatdf_limited)
 
 
 ##### Ecozone annotated PCA ####
